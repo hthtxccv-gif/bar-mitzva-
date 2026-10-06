@@ -20,13 +20,13 @@
   const grid = document.getElementById("products");
   const st = document.getElementById("status");
   if (!isConfigured()) { st.textContent = "יש להגדיר את המפתח הציבורי בקובץ js/config.js"; return; }
-  const { data, error } = await db.from("products").select("id,name,price").order("id");
+  const { data, error } = await db.from("products").select("id,name,price,image_url").order("id");
   if (error) { st.textContent = "לא הצלחנו לטעון את המוצרים. נסו לרענן את הדף."; return; }
   if (!data.length) { st.textContent = "אין מוצרים זמינים כרגע."; return; }
   st.hidden = true;
   data.forEach(p => {
     const card = h("article", null, "card");
-    card.append(h("h2", p.name), h("p", fmtPrice(p.price), "price"));
+    card.append(productImg(p.image_url, p.name), h("h2", p.name), h("p", fmtPrice(p.price), "price"));
     const a = h("a", "לצפייה והזמנה", "btn");
     a.href = "product.html?id=" + encodeURIComponent(p.id);
     card.append(a);
