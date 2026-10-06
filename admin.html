@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ניהול הזמנות</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top"><h1>ניהול הזמנות</h1></header>
+<main class="wrap">
+  <section id="login" class="panel narrow" hidden>
+    <form id="loginForm">
+      <label for="email">אימייל</label>
+      <input id="email" type="email" autocomplete="username" required>
+      <label for="password">סיסמה</label>
+      <input id="password" type="password" autocomplete="current-password" required>
+      <p id="loginError" class="error" role="alert" hidden></p>
+      <button class="btn" type="submit">התחברות</button>
+    </form>
+  </section>
+  <section id="dash" hidden>
+    <div class="bar"><p id="msg" class="status"></p><button id="logout" class="btn ghost">התנתקות</button></div>
+    <div class="stats">
+      <div class="stat"><span>סה״כ הזמנות</span><strong id="tCount">0</strong></div>
+      <div class="stat"><span>סה״כ הכנסות</span><strong id="tSum">0 ₪</strong></div>
+    </div>
+    <h2>לפי מוצר</h2>
+    <div class="scroll"><table><thead><tr><th>מוצר</th><th>כמות</th><th>סכום</th></tr></thead><tbody id="byProduct"></tbody></table></div>
+    <h2>כל ההזמנות</h2>
+    <div class="scroll"><table><thead><tr><th>שם</th><th>כיתה</th><th>מוצר</th><th>מחיר</th><th>תאריך ושעה</th></tr></thead><tbody id="orders"></tbody></table></div>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/common.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

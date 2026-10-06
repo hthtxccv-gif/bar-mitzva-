@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הזמנת מוצרים</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top"><h1>הזמנת מוצרים</h1><p>בחרו מוצר אחד להזמנה</p></header>
+<main class="wrap">
+  <p id="status" class="status">טוען מוצרים…</p>
+  <section id="products" class="grid"></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/common.js"></script>
+<script>
+(async () => {
+  const grid = document.getElementById("products");
+  const st = document.getElementById("status");
+  if (!isConfigured()) { st.textContent = "יש להגדיר את המפתח הציבורי בקובץ js/config.js"; return; }
+  const { data, error } = await db.from("products").select("id,name,price").order("id");
+  if (error) { st.textContent = "לא הצלחנו לטעון את המוצרים. נסו לרענן את הדף."; return; }
+  if (!data.length) { st.textContent = "אין מוצרים זמינים כרגע."; return; }
+  st.hidden = true;
+  data.forEach(p => {
+    const card = h("article", null, "card");
+    card.append(h("h2", p.name), h("p", fmtPrice(p.price), "price"));
+    const a = h("a", "לצפייה והזמנה", "btn");
+    a.href = "product.html?id=" + encodeURIComponent(p.id);
+    card.append(a);
+    grid.append(card);
+  });
+})();
+</script>
+</body>
+</html>

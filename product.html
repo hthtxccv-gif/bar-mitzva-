@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הזמנת מוצר</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top"><h1>הזמנת מוצר</h1></header>
+<main class="wrap narrow">
+  <p id="status" class="status">טוען…</p>
+  <section id="box" class="panel" hidden>
+    <h2 id="pname"></h2>
+    <p id="pprice" class="price"></p>
+    <form id="form" novalidate>
+      <label for="name">שם מלא</label>
+      <input id="name" type="text" maxlength="60" autocomplete="name" required>
+      <label for="cls">כיתה</label>
+      <select id="cls" required></select>
+      <p id="error" class="error" role="alert" hidden></p>
+      <button id="submit" class="btn" type="submit">שמירת הזמנה</button>
+    </form>
+    <div id="done" hidden>
+      <p class="ok">ההזמנה נרשמה. שימו לב: זו רק רישום הזמנה, התשלום עדיין לא בוצע.</p>
+      <p id="paynote"></p>
+      <a id="pay" class="btn" hidden>מעבר לתשלום ב-Bit</a>
+    </div>
+  </section>
+  <p><a href="index.html">← חזרה לכל המוצרים</a></p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/common.js"></script>
+<script src="js/order.js"></script>
+</body>
+</html>
