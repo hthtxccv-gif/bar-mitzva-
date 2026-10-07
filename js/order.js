@@ -8,13 +8,22 @@
   if (!Number.isInteger(id) || id <= 0) { st.textContent = "מוצר לא תקין."; return; }
 
   const { data: p, error } = await db.from("products")
-    .select("id,name,price,bit_url,image_url").eq("id", id).maybeSingle();
+    .select("id,name,price,bit_url,image_url,description,info_url").eq("id", id).maybeSingle();
   if (error) { st.textContent = "לא הצלחנו לטעון את המוצר. נסו לרענן."; return; }
   if (!p) { st.textContent = "המוצר לא נמצא."; return; }
 
   document.title = p.name;
+  $("pname").textContent = p.name;
   $("pname").before(productImg(p.image_url, p.name));
   $("pprice").textContent = fmtPrice(p.price);
+
+  const desc = (p.description || "").trim();
+  const link = (p.info_url || "").trim();
+  const hasLink = /^https:\/\//i.test(link);
+  $("pdesc").textContent = desc; $("pdesc").hidden = !desc;
+  if (hasLink) { $("plink").href = link; $("plink").hidden = false; }
+  $("descBox").hidden = !desc && !hasLink;
+
   const sel = $("cls");
   sel.append(new Option("בחרו כיתה…", ""));
   CLASSES.forEach(c => sel.append(new Option(c, c)));
