@@ -25,8 +25,8 @@
     const rows = or.data.map(o => {
       const p = prod(o) || { name: "?", price: 0 };
       total += p.price;
-      return [o.customer_name, o.class_name, p.name, fmtPrice(p.price),
-        new Date(o.created_at).toLocaleString("he-IL")];
+      return { id: o.id, cells: [o.customer_name, o.class_name, p.name, fmtPrice(p.price),
+        new Date(o.created_at).toLocaleString("he-IL")] };
     });
     or.data.forEach(o => {
       const p = prod(o); if (!p) return;
@@ -37,7 +37,7 @@
     $("tCount").textContent = or.data.length;
     $("tSum").textContent = fmtPrice(total);
     fill($("byProduct"), [...sums.values()].map(s => [s.name, s.n, fmtPrice(s.sum)]));
-    fill($("orders"), rows);
+    fillOrders(rows);
   }
 
   function fill(tbody, rows) {
@@ -46,6 +46,31 @@
       r.forEach(c => tr.append(h("td", String(c))));
       return tr;
     }));
+  }
+
+  function fillOrders(rows) {
+    $("orders").replaceChildren(...rows.map(r => {
+      const tr = document.createElement("tr");
+      r.cells.forEach(c => tr.append(h("td", String(c))));
+      const td = document.createElement("td");
+      const b = h("button", "מחיקה", "btn danger");
+      b.type = "button";
+      b.addEventListener("click", () => del(r, b));
+      td.append(b); tr.append(td);
+      return tr;
+    }));
+  }
+
+  async function del(r, b) {
+    if (!confirm("למחוק את ההזמנה של " + r.cells[0] + " (" + r.cells[2] + ")?\nלא ניתן לשחזר.")) return;
+    b.disabled = true;
+    const { data, error } = await db.from("orders").delete().eq("id", r.id).select("id");
+    if (error || !data || !data.length) {
+      b.disabled = false;
+      msg.textContent = "המחיקה נכשלה (ייתכן שאין הרשאה).";
+      return;
+    }
+    load();
   }
 
   $("loginForm").addEventListener("submit", async e => {
