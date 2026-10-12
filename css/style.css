@@ -42,3 +42,4 @@ th{background:#eef1f7;font-size:.9rem}
 .desc{background:#f8f9fc;border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0}
 .desc p{margin:0;white-space:pre-line}
 .link{display:inline-block;margin-top:8px;color:var(--brand);font-weight:600}
+.btn.danger{background:var(--bad);margin:0;padding:6px 12px;font-size:.9rem}
